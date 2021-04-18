@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.2/css/bulma.min.css" integrity="sha512-byErQdWdTqREz6DLAA9pCnLbdoGGhXfU6gm1c8bkf7F51JVmUBlayGe2A31VpXWQP+eiJ3ilTAZHCR3vmMyybA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+    <title>open library</title>
+</head>
+<body>
+    <div class="hero is-medium is-primary">
+        <div class="hero-body">
+            <p class="title is-1">Open library</p>
+            <p class="subtitle">search</p>
+        </div>
+        
+    </div>
+    <section class="content">
+        <div class="box">
+            <h3>Search for a book:</h3>
+            <input type="text" class="input">
+            <div class="dropdown">
+                <div class="dropdown-menu">
+                    <div class="dropdown-content results"></div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+.hero {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(255, 255, 255, 0.3)),
+    url('https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') center / cover;
+} 
+
+.title {
+    
+    font-style: italic;
+    font-weight: 700;
+}
