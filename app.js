@@ -1,6 +1,7 @@
 const input = document.querySelector('.input');
 const dropdown = document.querySelector('.dropdown');
 const resultsWrapper = document.querySelector('.results');
+const selected = document.querySelector('.selected-book');
 
 const debounce = (func) => {
     let timeoutId;
@@ -14,19 +15,20 @@ const debounce = (func) => {
     }
 }
 
-const fetchData = async (searchTerm) => {
+const first = (data, quantity) => {
+    const resultsList = [];
+    for (let i=0; i < quantity; i++) {
+        resultsList.push(data.docs[i])
+    }
+    return resultsList;
+}
+
+const fetchData = async (searchTerm,) => {
     const response = await axios.get('http://openlibrary.org/search.json', {
         params: {
             q: searchTerm
         }
     });
-    const first = (data, quantity) => {
-        const resultsList = [];
-        for (let i=0; i < quantity; i++) {
-            resultsList.push(data.docs[i])
-        }
-        return resultsList;
-    }
     makeList(first(response.data, 10));
 }
 
@@ -42,8 +44,39 @@ const makeList = (arr) => {
         option.innerHTML = coverSmall;
         option.innerHTML += arr[i].title;
         resultsWrapper.appendChild(option);
-        console.log(arr[i]);
+        option.addEventListener('click', () => {
+            dropdown.classList.remove('is-active');
+            input.value = arr[i].title;
+            selectBook(arr[i].isbn[0]);
+        })
     }
+}
+
+const selectBook = async (searchTerm) => {
+    const response = await axios.get('http://openlibrary.org/search.json', {
+        params: {
+            q: searchTerm
+        }
+    });
+    displayBook(response.data.docs[0]);
+}
+
+
+const displayBook = (book) => {
+    console.log(book);
+    
+    selected.innerHTML = `
+    <div class="columns">
+    <div class="column is-narrow">
+        <img src="http://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg" alt="cover art">
+    </div>
+    <div class="column">
+        <h1>${book.title}</h1>
+        <h3>by ${book.author_name}</h3>
+        <h6>first edition ${book.first_publish_year}</h6>
+    </div>
+</div>
+    `;
 }
 
 
@@ -55,3 +88,8 @@ const searchInput = () => {
 
 input.addEventListener('input', debounce(searchInput));
 
+document.addEventListener('click', event => {
+    if(!resultsWrapper.contains(event.target)) {
+        dropdown.classList.remove('is-active');
+    }
+})
