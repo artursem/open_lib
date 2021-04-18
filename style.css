@@ -8,7 +8,16 @@ body {
 } 
 
 .title {
-    
     font-style: italic;
     font-weight: 700;
+}
+
+.dropdown-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.dropdown-item img {
+    margin-right: 20px;
 }
