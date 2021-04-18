@@ -47,33 +47,33 @@ const makeList = (arr) => {
         option.addEventListener('click', () => {
             dropdown.classList.remove('is-active');
             input.value = arr[i].title;
-            selectBook(arr[i].isbn[0]);
-        })
+            selectBook(arr[i].key);
+        });
     }
 }
 
-const selectBook = async (searchTerm) => {
-    const response = await axios.get('http://openlibrary.org/search.json', {
-        params: {
-            q: searchTerm
-        }
-    });
-    displayBook(response.data.docs[0]);
+const selectBook = async (key) => {
+    console.log(`http://openlibrary.org${key}.json`);
+    const response = await axios.get(`http://openlibrary.org${key}.json`);
+    const authorLink = response.data.authors[0].author.key;
+    const author = await axios.get(`http://openlibrary.org${authorLink}.json`);
+    const authorName = author.data.name;
+    console.log(response.data);
+
+    displayBook(response.data, authorName);
 }
 
 
-const displayBook = (book) => {
-    console.log(book);
-    
+const displayBook = (book, author) => {
+    // console.log(`http://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`);
     selected.innerHTML = `
     <div class="columns">
     <div class="column is-narrow">
-        <img src="http://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg" alt="cover art">
+        <img src="http://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg" alt="cover art">
     </div>
     <div class="column">
         <h1>${book.title}</h1>
-        <h3>by ${book.author_name}</h3>
-        <h6>first edition ${book.first_publish_year}</h6>
+        <h3>by ${author}</h3>
     </div>
 </div>
     `;
