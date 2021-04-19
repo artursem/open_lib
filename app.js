@@ -34,7 +34,7 @@ const fetchData = async (searchTerm,) => {
 
 
 const makeList = (arr) => {
-    resultsWrapper.innerHTML = ''; // clear results
+    resultsWrapper.innerHTML = '';
     dropdown.classList.add('is-active');
     for (let i=0; i < arr.length; i++) {
         const coverSmall = `<img src='http://covers.openlibrary.org/b/id/${arr[i].cover_i}-S.jpg'>`
@@ -47,36 +47,76 @@ const makeList = (arr) => {
         option.addEventListener('click', () => {
             dropdown.classList.remove('is-active');
             input.value = arr[i].title;
-            selectBook(arr[i].key);
+            selectBook(arr[i]);
         });
     }
 }
 
-const selectBook = async (key) => {
-    console.log(`http://openlibrary.org${key}.json`);
-    const response = await axios.get(`http://openlibrary.org${key}.json`);
-    const authorLink = response.data.authors[0].author.key;
-    const author = await axios.get(`http://openlibrary.org${authorLink}.json`);
-    const authorName = author.data.name;
-    console.log(response.data);
-
-    displayBook(response.data, authorName);
+const selectBook = (book) => {
+    console.log(book);
+    
+    displayBook(book);
 }
 
 
-const displayBook = (book, author) => {
-    // console.log(`http://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`);
-    selected.innerHTML = `
-    <div class="columns">
-    <div class="column is-narrow">
-        <img src="http://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg" alt="cover art">
-    </div>
-    <div class="column">
-        <h1>${book.title}</h1>
-        <h3>by ${author}</h3>
+const displayBook = (book) => {
+    const { 
+        cover_i,
+        title, 
+        author_name, 
+        first_publish_year,
+        publisher,
+        id_goodreads,
+        id_amazon
+    } = book;
+    selected.innerHTML = '';
+    const columns = document.createElement('div');
+    columns.classList.add('columns', 'box');
+    selected.appendChild(columns);
+
+    if (cover_i !== undefined) {
+        const coverColumn = document.createElement('div');
+        coverColumn.classList.add('column', 'is-narrow');
+        coverColumn.innerHTML += `
+        <div class="column is-narrow">
+            <img src="http://covers.openlibrary.org/b/id/${cover_i}-L.jpg" alt="cover art">
+        </div>`;
+        columns.appendChild(coverColumn);
+    };
+
+    const textColumn = document.createElement('div');
+    textColumn.classList.add('column');
+
+    textColumn.innerHTML += `
+        <h1>${title}</h1>
+        <h3 class="mt-0">by ${author_name[0]}</h3>`;
+
+    if (first_publish_year !== undefined) {
+        textColumn.innerHTML += `<h5>first edition: ${first_publish_year}</h5>`;
+    };
+    if (publisher !== undefined) {
+        textColumn.innerHTML += `<h6>${publisher[0]}</h6>`;
+    };
+    if (id_goodreads !== undefined) {
+        const goodreads = id_goodreads[0];
+        textColumn.innerHTML += `Show
+        <a href="https://www.goodreads.com/book/show/${goodreads}" target="_blank">
+        <em>${title}</em>
+        </a>  on Goodreads`;
+    };
+    if (id_amazon !== undefined) {
+        const amazon = id_amazon[0];
+        textColumn.innerHTML += `Show
+        <a href="https://www.amazon.com/s?k=${amazon}" target="_blank">
+        <em>${title}</em>
+        </a>  on Amazon`;
+    };
+    textColumn.innerHTML += `    
     </div>
 </div>
     `;
+    columns.appendChild(textColumn);
+
 }
 
 

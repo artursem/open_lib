@@ -3,11 +3,11 @@ body {
 }
 
 .hero {
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(255, 255, 255, 0.3)),
+    background: linear-gradient(90deg, rgba(4, 17, 24, 0.9), rgba(255, 255, 255, 0.2)),
     url('https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') center / cover;
 } 
 
-.title {
+.title, h1 {
     font-style: italic;
     font-weight: 700;
 }
