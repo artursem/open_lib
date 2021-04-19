@@ -23,10 +23,10 @@ const first = (data, quantity) => {
     return resultsList;
 }
 
-const fetchData = async (searchTerm,) => {
+const fetchData = async (searchTerm) => {
     const response = await axios.get('http://openlibrary.org/search.json', {
         params: {
-            q: searchTerm
+            q: input.value
         }
     });
     makeList(first(response.data, 10));
@@ -47,17 +47,10 @@ const makeList = (arr) => {
         option.addEventListener('click', () => {
             dropdown.classList.remove('is-active');
             input.value = arr[i].title;
-            selectBook(arr[i]);
+            displayBook(arr[i]);
         });
     }
 }
-
-const selectBook = (book) => {
-    console.log(book);
-    
-    displayBook(book);
-}
-
 
 const displayBook = (book) => {
     const { 
@@ -99,17 +92,17 @@ const displayBook = (book) => {
     };
     if (id_goodreads !== undefined) {
         const goodreads = id_goodreads[0];
-        textColumn.innerHTML += `Show
+        textColumn.innerHTML += `<p>Show
         <a href="https://www.goodreads.com/book/show/${goodreads}" target="_blank">
         <em>${title}</em>
-        </a>  on Goodreads`;
+        </a>  on Goodreads</p>`;
     };
     if (id_amazon !== undefined) {
         const amazon = id_amazon[0];
-        textColumn.innerHTML += `Show
+        textColumn.innerHTML += `<p>Show
         <a href="https://www.amazon.com/s?k=${amazon}" target="_blank">
         <em>${title}</em>
-        </a>  on Amazon`;
+        </a>  on Amazon</p>`;
     };
     textColumn.innerHTML += `    
     </div>
@@ -120,13 +113,7 @@ const displayBook = (book) => {
 }
 
 
-const searchInput = () => {
-    fetchData(input.value);
-}
-
-
-
-input.addEventListener('input', debounce(searchInput));
+input.addEventListener('input', debounce(fetchData));
 
 document.addEventListener('click', event => {
     if(!resultsWrapper.contains(event.target)) {
